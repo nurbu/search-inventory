@@ -4,13 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
 
 public class SearchInventory {
+    private static ArrayList<Product> inventory = new ArrayList<>();
+    private static Scanner scan = new Scanner(System.in);
+
     public static void main(String[] args) {
-        ArrayList<Product> inventory = new ArrayList<>();
-        Scanner scan = new Scanner(System.in);
         try {
             BufferedReader reader = new BufferedReader(new FileReader("inventory.csv"));
             String line;
@@ -43,31 +43,13 @@ public class SearchInventory {
                     }
                     break;
                 case 2:
-                    getbyProductId(inventory, scan);
+                    getbyProductId();
                     break;
                 case 3:
-                    System.out.println("Enter product min: ");
-                    double min = scan.nextInt();
-                    System.out.println("Enter product max: ");
-                    double max = scan.nextInt();
-                    boolean isFound = false;
-                    for (Product product : inventory) {
-                        if (product.getPrice() >= min && product.getPrice() <= max) {
-                            System.out.println(product);
-                            isFound = true;
-                        }
-                    }
-                    if (isFound == false) {
-                        System.out.println("Sorry no products within the range");
-                    }
+                    getbyPriceRange();
                     break;
                 case 4:
-                    System.out.println("Enter product name: ");
-                    String productName = scan.next();
-                    System.out.println("Enter product price: ");
-                    double productPrice = scan.nextDouble();
-                    int productId = (inventory.get(inventory.size() - 1).getId()) + 1;
-                    inventory.add(new Product(productId, productName, productPrice));
+                    addProduct();
                     break;
                 case 5:
                     isDone = true;
@@ -78,7 +60,7 @@ public class SearchInventory {
         }
     }
 
-    public static ArrayList getbyProductId(List<Product> inventory, Scanner scan) {
+    public static ArrayList getbyProductId() {
         ArrayList<Product> foundProduct = new ArrayList<>();
         System.out.println("Enter product id: ");
         int desiredProductId = scan.nextInt();
@@ -95,6 +77,35 @@ public class SearchInventory {
         }
         return foundProduct;
 
+    }
+
+    public static ArrayList<Product> getbyPriceRange() {
+        ArrayList<Product> foundProduct = new ArrayList<>();
+        System.out.println("Enter product min: ");
+        double min = scan.nextInt();
+        System.out.println("Enter product max: ");
+        double max = scan.nextInt();
+        boolean isFound = false;
+        for (Product product : inventory) {
+            if (product.getPrice() >= min && product.getPrice() <= max) {
+                System.out.println(product);
+                isFound = true;
+                foundProduct.add(product);
+            }
+        }
+        if (isFound == false) {
+            System.out.println("Sorry no products within the range");
+        }
+        return foundProduct;
+    }
+
+    public static void addProduct() {
+        System.out.println("Enter product name: ");
+        String productName = scan.next();
+        System.out.println("Enter product price: ");
+        double productPrice = scan.nextDouble();
+        int productId = (inventory.get(inventory.size() - 1).getId()) + 1;
+        inventory.add(new Product(productId, productName, productPrice));
     }
 //    public static ArrayList<Product> getInventory() {
 //        ArrayList<Product> inventory = new ArrayList<>();
