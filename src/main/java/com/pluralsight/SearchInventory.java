@@ -11,6 +11,7 @@ public class SearchInventory {
     private static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
+        // Reads through "inventory.csv" -> creates Product objects -> add products to arraylist.
         try {
             BufferedReader reader = new BufferedReader(new FileReader("inventory.csv"));
             String line;
@@ -25,6 +26,7 @@ public class SearchInventory {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+        // Sorts inventory based off the name of the product.
         inventory.sort(Comparator.comparing(Product::getName));
         boolean isDone = false;
         while (!isDone) {
@@ -60,6 +62,7 @@ public class SearchInventory {
         }
     }
 
+    // Gets product by its ID.
     public static ArrayList getbyProductId() {
         ArrayList<Product> foundProduct = new ArrayList<>();
         System.out.println("Enter product id: ");
@@ -79,6 +82,7 @@ public class SearchInventory {
 
     }
 
+    // Finds all the products within a certain price range
     public static ArrayList<Product> getbyPriceRange() {
         ArrayList<Product> foundProduct = new ArrayList<>();
         System.out.println("Enter product min: ");
@@ -99,6 +103,7 @@ public class SearchInventory {
         return foundProduct;
     }
 
+    // Allows the user to add a new Product
     public static void addProduct() {
         System.out.println("Enter product name: ");
         String productName = scan.next();
