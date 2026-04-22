@@ -3,11 +3,12 @@ package com.pluralsight;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class SearchInventory {
     public static void main(String[] args) {
         ArrayList<Product> inventory = new ArrayList<>();
-
+        Scanner scan = new Scanner(System.in);
         try {
             BufferedReader reader = new BufferedReader(new FileReader("inventory.csv"));
             String line;
@@ -22,8 +23,66 @@ public class SearchInventory {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-        for (Product product : inventory) {
-            System.out.println(product);
+        boolean isDone = false;
+        while (!isDone) {
+            System.out.println("What do you want to do?");
+            System.out.println("\t1 - List all products");
+            System.out.println("\t2 - Look up a product by its id");
+            System.out.println("\t3 - Find all products within a price range");
+            System.out.println("\t4 - Add a new product");
+            System.out.println("\t5 - Quit the application");
+            System.out.println("Enter command: ");
+            int userInput = scan.nextInt();
+            switch (userInput) {
+                case 1:
+                    for (Product product : inventory) {
+                        System.out.println(product);
+                    }
+                    break;
+                case 2:
+                    System.out.println("Enter product id: ");
+                    int desiredProductId = scan.nextInt();
+                    boolean found = false;
+                    for (Product product : inventory) {
+                        if (product.getId() == desiredProductId) {
+                            System.out.println(product);
+                            found = true;
+                        }
+                    }
+                    if (found == false) {
+                        System.out.println("Product not found");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Enter product min: ");
+                    double min = scan.nextInt();
+                    System.out.println("Enter product max: ");
+                    double max = scan.nextInt();
+                    boolean isFound = false;
+                    for (Product product : inventory) {
+                        if (product.getPrice() >= min && product.getPrice() <= max) {
+                            System.out.println(product);
+                            isFound = true;
+                        }
+                    }
+                    if (isFound == false) {
+                        System.out.println("Sorry no products within the range");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Enter product name: ");
+                    String productName = scan.next();
+                    System.out.println("Enter product price: ");
+                    double productPrice = scan.nextDouble();
+                    int productId = (inventory.get(inventory.size() - 1).getId()) + 1;
+                    inventory.add(new Product(productId, productName, productPrice));
+                    break;
+                case 5:
+                    isDone = true;
+                    break;
+                default:
+                    System.out.println("Invalid input");
+            }
         }
     }
 
