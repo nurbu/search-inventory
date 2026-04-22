@@ -3,6 +3,8 @@ package com.pluralsight;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
 public class SearchInventory {
@@ -23,6 +25,7 @@ public class SearchInventory {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+        inventory.sort(Comparator.comparing(Product::getName));
         boolean isDone = false;
         while (!isDone) {
             System.out.println("What do you want to do?");
@@ -40,18 +43,7 @@ public class SearchInventory {
                     }
                     break;
                 case 2:
-                    System.out.println("Enter product id: ");
-                    int desiredProductId = scan.nextInt();
-                    boolean found = false;
-                    for (Product product : inventory) {
-                        if (product.getId() == desiredProductId) {
-                            System.out.println(product);
-                            found = true;
-                        }
-                    }
-                    if (found == false) {
-                        System.out.println("Product not found");
-                    }
+                    getbyProductId(inventory, scan);
                     break;
                 case 3:
                     System.out.println("Enter product min: ");
@@ -86,6 +78,24 @@ public class SearchInventory {
         }
     }
 
+    public static ArrayList getbyProductId(List<Product> inventory, Scanner scan) {
+        ArrayList<Product> foundProduct = new ArrayList<>();
+        System.out.println("Enter product id: ");
+        int desiredProductId = scan.nextInt();
+        boolean found = false;
+        for (Product product : inventory) {
+            if (product.getId() == desiredProductId) {
+                System.out.println(product);
+                foundProduct.add(product);
+                found = true;
+            }
+        }
+        if (found == false) {
+            System.out.println("Product not found");
+        }
+        return foundProduct;
+
+    }
 //    public static ArrayList<Product> getInventory() {
 //        ArrayList<Product> inventory = new ArrayList<>();
 //
